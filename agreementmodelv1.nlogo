@@ -5,6 +5,7 @@ extensions [matrix table]
 
 to setup
   reset-ticks
+  clear-plot
   resize-world 0 game-size 0 game-size
  setup-lookup-table
   setup-colour-table
@@ -12,6 +13,13 @@ to setup
  setup-score-matrix
 
 end
+
+to setup-and-go
+  setup
+  go
+  go
+end
+
 
 to go
 
@@ -123,11 +131,11 @@ end
 GRAPHICS-WINDOW
 186
 27
-1214
-1056
+704
+546
 -1
 -1
-20.0
+10.0
 1
 10
 1
@@ -322,6 +330,45 @@ P
 1
 0
 Number
+
+BUTTON
+1386
+166
+1492
+199
+NIL
+setup-and-go
+NIL
+1
+T
+OBSERVER
+NIL
+Q
+NIL
+NIL
+1
+
+PLOT
+742
+62
+942
+212
+Number of each
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"C" 1.0 0 -1184463 true "" "plot count patches with [genome = \"C\"]"
+"COMP" 1.0 0 -2674135 true "" "plot count patches with [genome = \"COMP\"]"
+"D" 1.0 0 -16777216 true "" "plot count patches with [genome = \"D\"]"
+"FREE" 1.0 0 -10899396 true "" "plot count patches with [genome = \"FREE\"]"
+"FAKE" 1.0 0 -2064490 true "" "plot count patches with [genome = \"FAKE\"]"
 
 @#$#@#$#@
 ## WHAT IS IT?
