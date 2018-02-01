@@ -25,7 +25,9 @@ to go
 
   ifelse ticks mod 2 = 0 [
   play-neighbors
-  select-changes
+    ifelse  probablistic = true
+    [ select-probabilistic-changes]
+    [select-changes]
     tick
   ]
   [
@@ -90,6 +92,26 @@ to set-patch-set [percentage  number-of-patches genome-name colour]
   ]
 end
 
+to-report calculate-if-swapping [player-score opponent-score]
+  if random-float 1 < 1 / (1 + exp(- (player-score - score)))
+      [
+        report true]
+  report false
+end
+
+to select-probabilistic-changes
+  ask patches [
+    let my-score score
+    let change-to genome
+    ask  one-of neighbors4
+     [
+
+        if calculate-if-swapping my-score score
+              [ set change-to genome]
+  ]
+    set changing-to change-to
+  ]
+end
 
 
 
@@ -97,7 +119,7 @@ to play-neighbors
   ask patches [
     let myscore 0
     let challenger genome
-    ask neighbors [
+    ask neighbors4 [
       set myscore myscore + calculate-game-score challenger genome
     ]
     set score myscore
@@ -109,7 +131,7 @@ to select-changes
   ask patches [
     let change-to genome
     let myscore score
-    ask  max-one-of neighbors  [score]
+    ask  max-one-of neighbors4  [score]
      [if score > myscore [set change-to genome]]
      set changing-to change-to
 
@@ -131,11 +153,11 @@ end
 GRAPHICS-WINDOW
 186
 27
-704
-546
+1214
+1056
 -1
 -1
-10.0
+20.0
 1
 10
 1
@@ -282,7 +304,7 @@ INPUTBOX
 166
 277
 eps
-0.5
+1.0
 1
 0
 Number
@@ -349,10 +371,10 @@ NIL
 1
 
 PLOT
-742
-62
-942
-212
+1219
+398
+1419
+548
 Number of each
 NIL
 NIL
@@ -361,7 +383,7 @@ NIL
 0.0
 10.0
 true
-false
+true
 "" ""
 PENS
 "C" 1.0 0 -1184463 true "" "plot count patches with [genome = \"C\"]"
@@ -369,6 +391,17 @@ PENS
 "D" 1.0 0 -16777216 true "" "plot count patches with [genome = \"D\"]"
 "FREE" 1.0 0 -10899396 true "" "plot count patches with [genome = \"FREE\"]"
 "FAKE" 1.0 0 -2064490 true "" "plot count patches with [genome = \"FAKE\"]"
+
+SWITCH
+1381
+204
+1501
+237
+probablistic
+probablistic
+0
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -716,6 +749,65 @@ NetLogo 6.0.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="experiment" repetitions="100" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="200"/>
+    <metric>count patches with [genome = "COMP"]</metric>
+    <metric>count patches with [genome = "C"]</metric>
+    <metric>count patches with [genome = "D"]</metric>
+    <metric>count patches with [genome = "FREE"]</metric>
+    <metric>count patches with [genome = "FAKE"]</metric>
+    <enumeratedValueSet variable="T">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="game-size">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="R">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="eps">
+      <value value="0.2"/>
+      <value value="0.3"/>
+      <value value="0.4"/>
+      <value value="0.5"/>
+      <value value="0.6"/>
+      <value value="0.7"/>
+      <value value="0.8"/>
+      <value value="0.9"/>
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="S">
+      <value value="-1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="percent-of-C">
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="percent-of-FREE">
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="percent-of-COMP">
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="delta">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="percent-of-D">
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="P">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="percent-of-FAKE">
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="probablistic">
+      <value value="true"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
