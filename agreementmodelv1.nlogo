@@ -92,8 +92,14 @@ to set-patch-set [percentage  number-of-patches genome-name colour]
   ]
 end
 
+to-report sat-lim [scorea]
+  if scorea < 0
+      [report 0]
+  report scorea
+end
+
 to-report calculate-if-swapping [player-score opponent-score]
-  if random-float 1 < 1 / (1 + exp(- (player-score - score)))
+  if random-float 1 < 1 / (1 + exp(- (player-score - opponent-score)))
       [
         report true]
   report false
@@ -104,9 +110,7 @@ to select-probabilistic-changes
     let my-score score
     let change-to genome
     ask  one-of neighbors4
-     [
-
-        if calculate-if-swapping my-score score
+     [if calculate-if-swapping sat-lim my-score sat-lim score
               [ set change-to genome]
   ]
     set changing-to change-to
@@ -304,7 +308,7 @@ INPUTBOX
 166
 277
 eps
-1.0
+0.5
 1
 0
 Number
