@@ -99,7 +99,7 @@ to-report sat-lim [scorea]
 end
 
 to-report calculate-if-swapping [player-score opponent-score]
-  if random-float 1 < 1 / (1 + exp(- (player-score - opponent-score)))
+  if random-float 1 < 1 / (1 + exp(- (opponent-score - player-score)))
       [
         report true]
   report false
@@ -110,7 +110,7 @@ to select-probabilistic-changes
     let my-score score
     let change-to genome
     ask  one-of neighbors4
-     [if calculate-if-swapping sat-lim my-score sat-lim score
+     [if calculate-if-swapping my-score score
               [ set change-to genome]
   ]
     set changing-to change-to
@@ -308,7 +308,7 @@ INPUTBOX
 166
 277
 eps
-0.5
+1.0
 1
 0
 Number
@@ -809,6 +809,63 @@ NetLogo 6.0.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="probablistic">
       <value value="true"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="deterministic" repetitions="100" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="200"/>
+    <metric>count patches with [genome = "COMP"]</metric>
+    <metric>count patches with [genome = "C"]</metric>
+    <metric>count patches with [genome = "D"]</metric>
+    <metric>count patches with [genome = "FREE"]</metric>
+    <metric>count patches with [genome = "FAKE"]</metric>
+    <enumeratedValueSet variable="T">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="game-size">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="R">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="eps">
+      <value value="0.2"/>
+      <value value="0.3"/>
+      <value value="0.4"/>
+      <value value="0.5"/>
+      <value value="0.6"/>
+      <value value="0.7"/>
+      <value value="0.8"/>
+      <value value="0.9"/>
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="S">
+      <value value="-1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="percent-of-C">
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="percent-of-FREE">
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="percent-of-COMP">
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="delta">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="percent-of-D">
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="P">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="percent-of-FAKE">
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="probablistic">
+      <value value="false"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
